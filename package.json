@@ -10,10 +10,16 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@aws-amplify/ui-react": "^6.5.5",
+    "@aws-amplify/ui-react": "^6.8.1",
+    "@react-oauth/google": "^0.12.1",
     "aws-amplify": "^6.6.6",
+    "firebase": "^11.1.0",
+    "gapi-script": "^1.2.0",
+    "gaxios": "^6.7.1",
+    "googleapis": "^144.0.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.28.1"
   },
   "devDependencies": {
     "@aws-amplify/backend": "^1.5.0",
