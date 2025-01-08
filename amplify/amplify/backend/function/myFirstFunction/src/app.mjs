@@ -1,7 +1,7 @@
 import express from "express";
 import bodyParser from "body-parser";
 import { eventContext } from "aws-serverless-express/middleware.js";
-import { post } from "axios";
+import axios from "axios";
 
 // Declara um novo aplicativo Express
 const app = express();
@@ -39,7 +39,7 @@ app.post("/auth/instagram", async (req, res) => {
 
   try {
     // Realiza a requisição HTTP para o Instagram para obter o access_token
-    const response = await post(
+    const response = await axios.post(
       "https://api.instagram.com/oauth/access_token",
       null,
       {
