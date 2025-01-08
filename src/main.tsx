@@ -1,5 +1,5 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
+import * as React from "react";
+import * as ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom"; // Importando o BrowserRouter
 import AppRouter from "./Router/index"; // A nossa configuração de rotas (AppRouter.tsx)
 import "./index.css";
