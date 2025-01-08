@@ -1,0 +1,44 @@
+{
+  "api": {
+    "apisocial": {
+      "dependsOn": [
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "myFirstFunction"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "API Gateway"
+    }
+  },
+  "function": {
+    "myFirstFunction": {
+      "build": true,
+      "dependsOn": [],
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    }
+  },
+  "parameters": {
+    "AMPLIFY_function_myFirstFunction_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "myFirstFunction"
+        }
+      ]
+    },
+    "AMPLIFY_function_myFirstFunction_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "myFirstFunction"
+        }
+      ]
+    }
+  }
+}

@@ -1,16 +1,18 @@
 import { useState, useEffect } from "react";
-import { auth, googleProvider, facebookProvider } from "./config";
+import { auth, facebookProvider } from "./config";
 import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { initializeGapiWithToken } from "../components/YoutubeUpload";
 import { signOut } from "firebase/auth";
-
 import "./index.css";
 
 function Signin() {
   const [userGoogle, setUserGoogle] = useState<string | null>(null);
   const [userFacebook, setUserFacebook] = useState<string | null>(null);
   const navigate = useNavigate();
+
+  console.log(userGoogle);
+  console.log(userFacebook);
 
   const handleSignInGoogle = () => {
     // Desloga primeiro (garantindo que o estado de login seja limpo)
@@ -61,15 +63,22 @@ function Signin() {
       });
   };
 
-  const handleSignInFacebook = () => {
-    signInWithPopup(auth, facebookProvider)
+  const handleSignInInstagram = () => {
+    signInWithPopup(auth, facebookProvider) // Firebase sign-in with Facebook
       .then((result) => {
         const user = result.user;
 
         if (user.email) {
+          // Store the user's email for further use
           setUserFacebook(user.email);
           localStorage.setItem("emailFacebook", user.email);
-          navigate("/app");
+
+          // After Facebook login, initiate Instagram OAuth flow
+          // Redirect the user to Instagram for authentication
+          const instagramAuthUrl = `https://www.instagram.com/oauth/authorize?enable_fb_login=0&force_authentication=1&client_id=571069375631067&redirect_uri=https://localhost:5173/auth/instagram/callback&response_type=code&scope=instagram_business_basic%2Cinstagram_business_manage_messages%2Cinstagram_business_manage_comments%2Cinstagram_business_content_publish`;
+
+          // Redirect to Instagram login page
+          window.location.href = instagramAuthUrl;
         } else {
           console.error("Email not available");
         }
@@ -98,12 +107,12 @@ function Signin() {
         />
         Sign in with Google
       </button>
-      <button className="facebook-btn" onClick={handleSignInFacebook}>
+      <button className="facebook-btn" onClick={handleSignInInstagram}>
         <img
-          src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg"
-          alt="Facebook"
+          src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Instagram_logo_2022.svg/640px-Instagram_logo_2022.svg.png"
+          alt="Instagram"
         />
-        Sign in with Facebook
+        Sign in with Instagram
       </button>
       {/* Para o TikTok, como a API não oferece diretamente um botão, você pode criar um botão personalizado */}
       <button

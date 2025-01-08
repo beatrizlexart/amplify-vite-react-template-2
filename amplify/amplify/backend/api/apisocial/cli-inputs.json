@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "paths": {
+    "/dev": {
+      "name": "/dev",
+      "lambdaFunction": "myFirstFunction",
+      "permissions": {
+        "setting": "open"
+      }
+    }
+  }
+}

@@ -26,13 +26,37 @@ button {
 
 /* Botão do Facebook */
 .facebook-btn {
-  background-color: #3b5998;
+  background: linear-gradient(
+    to right,
+    #feda75,
+    #fa7e1e,
+    #d62976,
+    #962fbf,
+    #4f5bd5
+  );
   color: white;
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 10px 20px; /* Optional: Adjust padding to your preference */
+  border-radius: 5px; /* Optional: Adds rounded corners */
+  text-align: center;
+  font-weight: bold;
+  border: none; /* Optional: Removes border */
+  cursor: pointer;
+  transition: background 0.3s ease-in-out; /* Optional: Smooth transition for hover effect */
 }
 
+.facebook-btn:hover {
+  background: linear-gradient(
+    to right,
+    #4f5bd5,
+    #962fbf,
+    #d62976,
+    #fa7e1e,
+    #feda75
+  ); /* Inverts the gradient on hover */
+}
 .facebook-btn img {
   width: 20px;
   margin-right: 10px;
