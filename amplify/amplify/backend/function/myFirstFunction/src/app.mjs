@@ -1,11 +1,11 @@
 import express from "express";
-import { json } from "body-parser";
-import { eventContext } from "aws-serverless-express/middleware.js";
+import bodyParser from "body-parser";
+import { eventContext } from "aws-serverless-express/middleware";
 import { post } from "axios";
 
 // Declara um novo aplicativo Express
 const app = express();
-app.use(json());
+app.use(bodyParser.json());
 app.use(eventContext());
 
 // Habilita o CORS para todos os métodos
