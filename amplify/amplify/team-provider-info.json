@@ -15,7 +15,7 @@
       "function": {
         "myFirstFunction": {
           "deploymentBucketName": "amplify-amplify2303-dev-788d4-deployment",
-          "s3Key": "amplify-builds/myFirstFunction-4437632f5536646c594a-build.zip"
+          "s3Key": "amplify-builds/myFirstFunction-336f4265762b58547569-build.zip"
         }
       },
       "api": {

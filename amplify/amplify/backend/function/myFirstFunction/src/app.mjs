@@ -29,7 +29,7 @@ app.get("/dev/*", function (req, res) {
 /****************************
  * Exemplo de método POST (Instagram Code Exchange) *
  ****************************/
-app.post("/auth/instagram", async (req, res) => {
+app.post("/dev/auth/instagram", async (req, res) => {
   const { code } = req.body;
 
   // Variáveis do Instagram (substitua com os valores reais)
