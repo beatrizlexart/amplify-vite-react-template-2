@@ -1,5 +1,5 @@
 import { createServer, proxy } from "aws-serverless-express";
-import app from "./app"; // O app com a lógica da Lambda
+import app from "./app.mjs"; // O app com a lógica da Lambda
 
 /**
  * @type {import('http').Server}
