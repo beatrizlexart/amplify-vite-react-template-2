@@ -54,18 +54,18 @@ function Signin() {
               navigate("/youtube-upload"); // Navega para a página de upload de vídeos
             }
           })
-          .catch((error) => {
+          .catch((error: any) => {
             console.error("Erro no login", error);
           });
       })
-      .catch((error) => {
+      .catch((error: any) => {
         console.error("Erro ao fazer logout", error);
       });
   };
 
   const handleSignInInstagram = () => {
     signInWithPopup(auth, facebookProvider) // Firebase sign-in with Facebook
-      .then((result) => {
+      .then((result: any) => {
         const user = result.user;
 
         if (user.email) {
@@ -83,7 +83,7 @@ function Signin() {
           console.error("Email not available");
         }
       })
-      .catch((error) => {
+      .catch((error: any) => {
         console.error("Error signing in:", error);
       });
   };
