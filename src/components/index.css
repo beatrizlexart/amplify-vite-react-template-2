@@ -127,3 +127,25 @@ input[type="file"] {
 .logout-btn:hover {
   background-color: #e04e2b;
 }
+
+.upload-btn {
+  background: linear-gradient(
+    to right,
+    #feda75,
+    #fa7e1e,
+    #d62976,
+    #962fbf,
+    #4f5bd5
+  );
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 20px; /* Optional: Adjust padding to your preference */
+  border-radius: 5px; /* Optional: Adds rounded corners */
+  text-align: center;
+  font-weight: bold;
+  border: none; /* Optional: Removes border */
+  cursor: pointer;
+  transition: background 0.3s ease-in-out; /* Optional: Smooth transition for hover effect */
+}

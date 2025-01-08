@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { signOut } from "firebase/auth";
 import { auth } from "../Authentication/config";
+import { ClipLoader } from "react-spinners";
 
 function InstagramUpload() {
   const [videoTitle, setVideoTitle] = useState<string>("");
@@ -9,6 +10,7 @@ function InstagramUpload() {
   const [videoFile, setVideoFile] = useState<File | null>(null);
   const [uploadStatus, setUploadStatus] = useState<string>("");
   const [userId, setUserId] = useState<string | null>(null); // User ID for Instagram
+  const [isUploading, setIsUploading] = useState<boolean>(false);
   const navigate = useNavigate();
 
   const signOutRedirect = () => {
@@ -57,6 +59,10 @@ function InstagramUpload() {
       });
   };
 
+  // const generateVideoUrl = (videoFile: any) => {
+  //   return URL.createObjectURL(videoFile); // Cria uma URL temporária que representa o vídeo localmente
+  // };
+
   // Função para buscar os dados do usuário do Instagram após obter o token
   const fetchInstagramUserData = (accessToken: string) => {
     fetch(
@@ -84,9 +90,17 @@ function InstagramUpload() {
       return;
     }
 
+    setIsUploading(true); // Começar o carregamento
+
+    const videoUrl =
+      "https://muze-mvp-dev-videos-public.s3.us-east-2.amazonaws.com/beatriz.rosa.testing%40gmail.com/video-7ccd703b-3961-40e3-a039-68945dbccbbd.mp4";
+
     const formData = new FormData();
-    formData.append("video_url", videoFile);
+    formData.append("is_carousel_item", true.toString());
+    formData.append("video_file", videoFile);
+    formData.append("video_url", videoUrl);
     formData.append("caption", videoDescription);
+    formData.append("media_type", "VIDEO");
     formData.append("access_token", accessToken);
 
     fetch(`https://graph.instagram.com/v15.0/${userId}/media`, {
@@ -98,25 +112,32 @@ function InstagramUpload() {
         if (data.id) {
           const mediaId = data.id;
           setUploadStatus("Upload session started.");
-          publishVideo(mediaId, accessToken);
+          setIsUploading(false); // Começar o carregamento
+
+          // Comece a verificar o status da mídia após o upload
+          checkMediaStatus(mediaId, accessToken);
         } else {
           setUploadStatus("Failed to start upload session.");
+          setIsUploading(false); // Começar o carregamento
         }
       })
       .catch((error) => {
         console.error("Error starting upload session:", error);
         setUploadStatus("Error starting upload session.");
+        setIsUploading(false); // Começar o carregamento
       });
   };
 
   // Função para publicar o vídeo
   const publishVideo = (mediaId: string, accessToken: string) => {
+    const formData = new URLSearchParams();
+    formData.append("creation_id", mediaId); // ID da criação de mídia
+    formData.append("access_token", accessToken); // Token de acesso
+
+    // Enviar os dados no formato correto
     fetch(`https://graph.instagram.com/v15.0/${userId}/media_publish`, {
       method: "POST",
-      body: JSON.stringify({
-        creation_id: mediaId,
-        access_token: accessToken,
-      }),
+      body: formData, // Envia os parâmetros como form-data
     })
       .then((response) => response.json())
       .then((data) => {
@@ -124,12 +145,39 @@ function InstagramUpload() {
           setUploadStatus(`Video published successfully. Video ID: ${data.id}`);
         } else {
           setUploadStatus("Failed to publish video.");
+          console.log("Erro ao publicar o vídeo:", data);
         }
       })
       .catch((error) => {
         console.error("Error publishing video:", error);
         setUploadStatus("Error publishing video.");
       });
+  };
+
+  const checkMediaStatus = (mediaId: string, accessToken: string) => {
+    const intervalId = setInterval(() => {
+      fetch(
+        `https://graph.instagram.com/${mediaId}?fields=status&access_token=${accessToken}`
+      )
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.status === "FINISHED") {
+            // Mídia pronta para publicação, então publicamos
+            clearInterval(intervalId); // Para a verificação periódica
+            publishVideo(mediaId, accessToken);
+            setIsUploading(false);
+          } else {
+            console.log(
+              "Mídia ainda não pronta para publicação. Verificando novamente..."
+            );
+            setIsUploading(true);
+          }
+        })
+        .catch((error) => {
+          console.error("Erro ao verificar status da mídia:", error);
+          clearInterval(intervalId); // Em caso de erro, pare de verificar
+        });
+    }, 5000); // Verifique a cada 5 segundos
   };
 
   // Função de envio do formulário (handleUpload)
@@ -177,14 +225,22 @@ function InstagramUpload() {
           accept="video/*"
           onChange={(e) => setVideoFile(e.target.files?.[0] || null)}
         />
-        <button onClick={handleUpload}>Upload Video</button>
+        <button className="upload-btn" onClick={handleUpload}>
+          Upload Video
+        </button>
         {uploadStatus && (
           <p
             className={`status-message ${
               uploadStatus.includes("successful") ? "success" : "error"
             }`}
           >
-            {uploadStatus}
+            {uploadStatus.includes("successful")
+              ? `Video published successfully. Video ID: ${
+                  uploadStatus.split(": ")[1]
+                }`
+              : isUploading && (
+                  <ClipLoader color="#3498db" loading={true} size={30} />
+                )}
           </p>
         )}
       </div>
