@@ -1,6 +1,6 @@
 import express from "express";
 import bodyParser from "body-parser";
-import { eventContext } from "aws-serverless-express/middleware";
+import { eventContext } from "aws-serverless-express/middleware.js";
 import { post } from "axios";
 
 // Declara um novo aplicativo Express
