@@ -32,25 +32,21 @@ app.get("/dev/*", function (req, res) {
 app.post("/dev/auth/instagram", async (req, res) => {
   const { code } = req.body;
 
-  // Variáveis do Instagram (substitua com os valores reais)
-  const clientId = "571069375631067"; // Seu client_id do Instagram
-  const clientSecret = "294ac10bfd8f72c6135bc498f8acc171"; // Seu client_secret do Instagram
-  const redirectUri = "https://localhost:5173/auth/instagram/callback"; // O mesmo redirect_uri configurado
+  const clientId = "571069375631067";
+  const clientSecret = "294ac10bfd8f72c6135bc498f8acc171";
+  const redirectUri = "https://localhost:5173/auth/instagram/callback";
 
   try {
     // Realiza a requisição HTTP para o Instagram para obter o access_token
     const response = await axios.post(
       "https://api.instagram.com/oauth/access_token",
-      null,
-      {
-        params: {
-          client_id: clientId,
-          client_secret: clientSecret,
-          grant_type: "authorization_code",
-          redirect_uri: redirectUri,
-          code: code,
-        },
-      }
+      new URLSearchParams({
+        client_id: clientId,
+        client_secret: clientSecret,
+        grant_type: "authorization_code",
+        redirect_uri: redirectUri,
+        code: code,
+      }).toString()
     );
 
     // Retorna o access_token no formato JSON para o frontend
@@ -59,12 +55,10 @@ app.post("/dev/auth/instagram", async (req, res) => {
     });
   } catch (error) {
     console.error("Erro ao trocar código por token:", error);
-
-    // Formatação personalizada do erro
     res.status(500).json({
       error: "Erro ao trocar código por token",
-      message: error.message, // Inclui a mensagem do erro real
-      code: error.code || "INTERNAL_SERVER_ERROR", // Caso exista algum código de erro
+      message: error.message,
+      code: error.code || "INTERNAL_SERVER_ERROR",
     });
   }
 });
