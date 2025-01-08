@@ -60,9 +60,11 @@ app.post("/auth/instagram", async (req, res) => {
   } catch (error) {
     console.error("Erro ao trocar código por token:", error);
 
-    // Retorna um erro em caso de falha
+    // Formatação personalizada do erro
     res.status(500).json({
       error: "Erro ao trocar código por token",
+      message: error.message, // Inclui a mensagem do erro real
+      code: error.code || "INTERNAL_SERVER_ERROR", // Caso exista algum código de erro
     });
   }
 });

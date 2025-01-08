@@ -24,7 +24,7 @@ function InstagramUpload() {
   // Função para trocar o código de autorização por um token de acesso
   const exchangeCodeForAccessToken = (code: string) => {
     const apiUrl =
-      "https://kgpwpxx6zb.execute-api.us-east-2.amazonaws.com/dev/auth/instagram"; // Substitua pela URL do seu endpoint no API Gateway
+      "https://kgpwpxx6zb.execute-api.us-east-2.amazonaws.com/dev/dev/auth/instagram"; // Substitua pela URL do seu endpoint no API Gateway
 
     fetch(apiUrl, {
       method: "POST",
